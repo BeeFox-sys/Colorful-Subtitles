@@ -2,6 +2,7 @@ package io.github.haykam821.colorfulsubtitles.config;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.stream.Stream;
 
 import com.mojang.serialization.Codec;
@@ -38,7 +39,11 @@ public final class ColorfulSubtitlesCodecs {
 				return DataResult.success(category);
 			}
 		}
-
-		return DataResult.error("Unknown sound category '" + name + "'");
+		Supplier<String> error = new Supplier<String>() {
+			public String get() {
+				return "Unknown sound category '" + name + "'";
+			}
+		};
+		return DataResult.error(error);
 	}
 }

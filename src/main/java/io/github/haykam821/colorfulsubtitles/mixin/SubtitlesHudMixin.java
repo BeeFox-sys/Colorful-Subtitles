@@ -33,9 +33,33 @@ public class SubtitlesHudMixin {
 		return this.iterationEntry = (ColorHolder) iterator.next();
 	}
 
+	private static int multiplyColors(int a, int b) {
+		int i = (a & 16711680) >> 16;
+		int j = (b & 16711680) >> 16;
+		int k = (a & '\uff00') >> 8;
+		int l = (b & '\uff00') >> 8;
+		int m = (a & 255) >> 0;
+		int n = (b & 255) >> 0;
+		int o = (int)((float)i * (float)j / 255.0F);
+		int p = (int)((float)k * (float)l / 255.0F);
+		int q = (int)((float)m * (float)n / 255.0F);
+		return a & -16777216 | o << 16 | p << 8 | q;
+	 }
+
 	@ModifyArg(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/SubtitlesHud;drawTextWithShadow(Lnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/font/TextRenderer;Lnet/minecraft/text/Text;III)V"), index = 5)
 	private int modifyDrawColor(int color) {
-		return MathHelper.multiplyColors(color, this.iterationEntry.getColor());
+		int a = color;
+		int b = this.iterationEntry.getColor();
+		int i = (a & 16711680) >> 16;
+		int j = (b & 16711680) >> 16;
+		int k = (a & '\uff00') >> 8;
+		int l = (b & '\uff00') >> 8;
+		int m = (a & 255) >> 0;
+		int n = (b & 255) >> 0;
+		int o = (int)((float)i * (float)j / 255.0F);
+		int p = (int)((float)k * (float)l / 255.0F);
+		int q = (int)((float)m * (float)n / 255.0F);
+		return a & -16777216 | o << 16 | p << 8 | q;
 	}
 
 	@Inject(method = "onSoundPlayed", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/hud/SubtitlesHud$SubtitleEntry;reset(Lnet/minecraft/util/math/Vec3d;)V"), locals = LocalCapture.CAPTURE_FAILHARD)
