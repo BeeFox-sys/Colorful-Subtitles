@@ -25,6 +25,7 @@ hs_err_pid*
 .gradle/
 .project
 .settings/
+.vscode
 
 remappedSrc/
 run/
